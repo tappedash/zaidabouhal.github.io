@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaid Abouhal - Building Systems at Scale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Fira+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #fff;
+            --bg-secondary: #fafafa;
+            --text: #333;
+            --text-secondary: #666;
+            --border: #e8e8e8;
+            --accent: #d63230;
+            --code-bg: #f4f4f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Main */
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-secondary {
+            border-color: var(--text-secondary);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--text-secondary);
+            color: white;
+            border-color: var(--text-secondary);
+        }
+
+        /* Sections */
+        section {
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        section h2 span {
+            color: var(--accent);
+        }
+
+        section p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        section strong {
+            color: var(--text);
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            margin-top: 2rem;
+        }
+
+        .gallery-intro {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background: var(--bg-secondary);
+            aspect-ratio: 1;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--accent);
+            box-shadow: 0 5px 20px rgba(214, 50, 48, 0.1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--code-bg) 0%, var(--bg-secondary) 100%);
+            color: var(--text-secondary);
+            font-size: 3rem;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* Story Cards */
+        .story-card {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .story-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .story-card p {
+            margin-bottom: 0.8rem;
+        }
+
+        .story-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin-top: 2rem;
+        }
+
+        .timeline-item {
+            margin-bottom: 2.5rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            margin-top: 0.5rem;
+        }
+
+        .timeline-item h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: var(--text);
+        }
+
+        .timeline-item .year {
+            display: inline-block;
+            background: var(--code-bg);
+            padding: 0.3rem 0.7rem;
+            border-radius: 3px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item .company {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+
+        .timeline-item .role {
+            font-size: 0.9rem;
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .timeline-item p {
+            margin-bottom: 0.8rem;
+        }
+
+        .timeline-item p:last-of-type {
+            margin-bottom: 1rem;
+        }
+
+        .highlight-quote {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-left: 3px solid var(--accent);
+            border-radius: 4px;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background: var(--code-bg);
+            color: var(--accent);
+            padding: 0.3rem 0.7rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-family: 'Fira Code', monospace;
+            font-weight: 600;
+        }
+
+        /* Inspiration Grid */
+        .inspiration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .inspiration-item {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .inspiration-item:hover {
+            border-color: var(--accent);
+            background: var(--bg);
+        }
+
+        .inspiration-item .year {
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .inspiration-item .title {
+            color: var(--text);
+            font-weight: 600;
+            margin-top: 0.4rem;
+            font-size: 0.85rem;
+        }
+
+        .inspiration-item .type {
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Projects */
+        .projects {
+            margin-top: 2rem;
+        }
+
+        .project {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .project h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+            color: var(--text);
+        }
+
+        .project .client {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .project p {
+            margin-bottom: 1rem;
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .stat-value {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-badge {
+            background: white;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.25rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-weight: 600;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-group h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .skill-group ul {
+            list-style: none;
+        }
+
+        .skill-group li {
+            color: var(--text-secondary);
+            padding: 0.3rem 0;
+            padding-left: 1rem;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .skill-group li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Philosophy */
+        .philosophy {
+            background: var(--code-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            border-left: 4px solid var(--accent);
+            text-align: center;
+        }
+
+        .philosophy h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .philosophy p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        /* Contact */
+        .contact-section {
+            text-align: center;
+            padding: 4rem 0;
+            border-bottom: none;
+        }
+
+        .contact-section h2 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-text {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .social-links a:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            nav {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .inspiration-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .projects {
+                margin-top: 1rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">Zaid Abouhal</div>
+            <nav>
+                <a href="#origin">Origin</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#journey">Journey</a>
+                <a href="#work">Work</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero -->
+        <section class="hero">
+            <h1>From <span style="color: var(--accent);">digital explorer</span> to <span style="color: var(--accent);">production engineer</span></h1>
+            <p class="hero-subtitle">Born 1998. Got a computer at 7. Made memes. Produced EDM. Modernized parking in Casablanca. Built insurance systems. Now architecting infrastructure for billions.</p>
+            <div class="cta-group">
+                <a href="#work" class="btn">See My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+            </div>
+        </section>
+
+        <!-- Origin -->
+        <section id="origin">
+            <h2><span>→</span> The Origin Story</h2>
+
+            <div class="story-card">
+                <h3>Age 7: When It Started (2005)</h3>
+                <p>I was <strong>7 years old when I got my first computer.</strong> That's when everything began.</p>
+                <p>I played <strong>video games</strong>—learned that systems have logic. Input → Processing → Output. Rules create experiences. Actions have consequences.</p>
+                <p>Then came the internet: <strong>MSN Messenger, Myspace, early Facebook, YouTube in its first years, torrents, online forums.</strong> I watched people build digital communities. Connect. Share. Create. I was mesmerized by how this worked.</p>
+                <p style="color: var(--accent); font-weight: 600;">I asked myself: <em>How do I build these things?</em></p>
+            </div>
+
+            <div class="story-card">
+                <h3>2013: The Creative Period</h3>
+                <p>I was 15. At an age when you're discovering who you are.</p>
+                <p>I started <strong>making memes</strong> and joining <strong>Facebook meme communities</strong>. It sounds trivial now, but it taught me something crucial: content resonates. Humor spreads. Communities form around shared ideas. What makes something go viral? What keeps people engaged?</p>
+                <p>Around the same time, I started <strong>producing electronic music (EDM).</strong> Using tools like FL Studio, Ableton, synthesizers. Playing with sounds, layers, effects, timing, release. Watching tutorials. Understanding how software works from the inside out.</p>
+                <div class="highlight-quote">
+                    <strong>That's when it clicked:</strong> Software is just a tool. But the tools themselves are built by engineers. To make music, I need to understand the DAW (Digital Audio Workstation). To make memes go viral, I need to understand social platforms. To build anything, I need to understand systems.
+                </div>
+            </div>
+
+            <div class="story-card">
+                <h3>2012-2018: The Idealist Years</h3>
+                <p>Movies and TV shows shaped how I think about technology and power:</p>
+                
+                <div class="inspiration-grid">
+                    <div class="inspiration-item">
+                        <div class="year">1999</div>
+                        <div class="title">The Matrix</div>
+                        <div class="type">Philosophy</div>
+                    </div>
+                    <div class="inspiration-item">
+                        <div class="year">2011</div>
+                        <div class="title">Limitless</div>
+                        <div class="type">Possibility</div>
+                    </div>
+                    <div class="inspiration-item">
+                        <div class="year">2012</div>
+                        <div class="title">Social Network</div>
+                        <div class="type">Platforms</div>
+                    </div>
+                    <div class="inspiration-item">
+                        <div class="year">2013</div>
+                        <div class="title">Silicon Valley</div>
+                        <div class="type">Culture</div>
+                    </div>
+                    <div class="inspiration-item">
+                        <div class="year">2015</div>
+                        <div class="title">Mr. Robot</div>
+                        <div class="type">Hacking</div>
+                    </div>
+                    <div class="inspiration-item">
+                        <div class="year">2014</div>
+                        <div class="title">Halt & Catch Fire</div>
+                        <div class="type">Building</div>
+                    </div>
+                    <div class="inspiration-item">
+                        <div class="year">2016</div>
+                        <div class="title">Snowden</div>
+                        <div class="type">Ethics</div>
+                    </div>
+                    <div class="inspiration-item">
+                        <div class="year">2017</div>
+                        <div class="title">WikiLeaks</div>
+                        <div class="type">Power</div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 1.5rem; font-size: 0.95rem;">
+                    <strong>The Matrix:</strong> Systems are everything. Reality is code. <strong>Limitless:</strong> Tools amplify humans exponentially. <strong>Social Network:</strong> Platforms change the world overnight. <strong>Silicon Valley:</strong> The culture of building, disrupting, moving fast (and sometimes failing). <strong>Mr. Robot:</strong> Engineers have power. Systems can be weaponized. Responsibility matters. <strong>Halt & Catch Fire:</strong> Building isn't about being first—it's about obsession, teams, and doing it right. <strong>Snowden:</strong> Technology is political. <strong>WikiLeaks:</strong> Systems have consequences.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- Journey -->
+        <section id="journey">
+            <h2><span>→</span> The Professional Journey</h2>
+
+            <div class="timeline">
+                <!-- 2021-2023 -->
+                <div class="timeline-item">
+                    <span class="timeline-year">2021-2023</span>
+                    <h3>Building a Mobility Startup</h3>
+                    <div class="company">Skills and Smart Group, Casablanca</div>
+                    <div class="role">Full-Stack Software Engineer | Smart Parking Platform</div>
+                    <p><strong>My startup journey.</strong> Built a complete platform to modernize parking reservation systems for <strong>Casablanca City.</strong> Real-time location tracking, booking systems, payment integration, mobile-first design. The problem was real: finding parking in a crowded city is a nightmare.</p>
+                    <p>The goal: <strong>Make parking frictionless.</strong> No more circling for spots. Smart reservations. Seamless mobile experience. API-driven architecture serving thousands of concurrent users.</p>
+                    <div class="highlight-quote">
+                        <strong>Lesson:</strong> Building a startup teaches you that great product comes from obsession with the user's actual pain. Every feature exists to solve a real problem. Shipping beats perfection. The customer feedback loop is your best teacher.
+                    </div>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Real-time APIs</span>
+                        <span class="tech-tag">Location Services</span>
+                        <span class="tech-tag">Mobile First</span>
+                    </div>
+                </div>
+
+                <!-- 2023 -->
+                <div class="timeline-item">
+                    <span class="timeline-year">2023</span>
+                    <h3>Enterprise Legacy Systems</h3>
+                    <div class="company">Neoxia, Casablanca</div>
+                    <div class="role">Software Engineer | Claims Management | Large Teams (20+)</div>
+                    <p><strong>The enterprise reality.</strong> Two massive claim management systems for <strong>AXA Insurance.</strong> This is where I learned that production systems aren't about cool architecture—they're about reliability.</p>
+                    <p><strong>Sinistre Auto Corporel</strong> — Vehicle accident claims. 5K+ claims daily. Complex business logic spanning decades. You don't move fast and break things here. People's insurance claims depend on this working.</p>
+                    <p><strong>Les Accidents de Travail</strong> — Workplace accident claims. Even more complex. Medical documentation, compliance requirements, regional variations. Building systems where precision and care directly affect human lives.</p>
+                    <div class="highlight-quote">
+                        <strong>Lesson:</strong> Legacy code is battle-tested code. These systems survived years of production load. Working in large teams (20+ engineers) taught me that communication beats clever code. Reliability is not a feature—it's the foundation.
+                    </div>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Java</span>
+                        <span class="tech-tag">Spring Boot</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">100K+ tx/week</span>
+                    </div>
+                </div>
+
+                <!-- 2024 -->
+                <div class="timeline-item">
+                    <span class="timeline-year">2024</span>
+                    <h3>Multi-Domain Growth</h3>
+                    <div class="company">Lam Research & American Chemical Society</div>
+                    <div class="role">Senior Software Engineer | Full-Stack | Cloud Architecture</div>
+                    <p>Moved beyond single domains. Research platforms. Scientific data processing. Authentication infrastructure at scale. Started thinking deeply about cloud architecture, distributed systems, and scaling patterns.</p>
+                    <div class="highlight-quote">
+                        <strong>Lesson:</strong> Every domain teaches something unique. Research taught precision. Auth taught security thinking. Financial taught resilience. Patterns start emerging—problems that look different on the surface are actually the same problems dressed differently.
+                    </div>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">Kubernetes</span>
+                    </div>
+                </div>
+
+                <!-- 2025 -->
+                <div class="timeline-item">
+                    <span class="timeline-year">2025</span>
+                    <h3>Production Engineering at Massive Scale</h3>
+                    <div class="company">AI Insurance</div>
+                    <div class="role">Senior Software Engineer | 100K+ transactions/week | 99.99% uptime</div>
+                    <p>Financial systems processing billions in transactions. Every microsecond counts. Every 0.01% of uptime lost means real money. This is where theory becomes obsession with production excellence.</p>
+                    <p>Multi-region deployment. AI integration. Built from ground up with production as first principle. The kind of engineering where you never stop thinking about edge cases, failure modes, and what happens when everything breaks at 3 AM.</p>
+                    <div class="highlight-quote">
+                        <strong>Lesson:</strong> The idealist becomes pragmatist. Real change doesn't come from clever algorithms. It comes from boring, careful engineering. Building systems so reliable that millions of people never even think about what's running underneath. That's the real power.
+                    </div>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Java</span>
+                        <span class="tech-tag">Spring Boot</span>
+                        <span class="tech-tag">Kubernetes</span>
+                        <span class="tech-tag">Multi-Region AWS</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work -->
+        <section id="work">
+            <h2><span>→</span> Projects & Impact</h2>
+
+            <div class="projects">
+                <div class="project">
+                    <h3>Smart Parking Platform</h3>
+                    <p>Skills and Smart Group | Modernizing Casablanca City</p>
+                    <p>Full-stack platform for parking reservation and real-time management in Casablanca. Real-time location services, mobile-first design, payment integration, API-driven architecture. Served thousands of users solving the parking problem.</p>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <span class="stat-label">Type</span>
+                            <span class="stat-value">Startup</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Focus</span>
+                            <span class="stat-value">UX First</span>
+                        </div>
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-badge">Node.js</span>
+                        <span class="tech-badge">React</span>
+                        <span class="tech-badge">APIs</span>
+                        <span class="tech-badge">Real-time</span>
+                    </div>
+                </div>
+
+                <div class="project">
+                    <h3>Vehicle Accident Claims</h3>
+                    <div class="client">AXA Insurance | Sinistre Auto Corporel</div>
+                    <p>Enterprise claims processing for vehicle accidents in North Africa. Legacy Java system handling thousands of claims daily. Collaborated with underwriting, legal, and operations teams (20+ engineers).</p>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <span class="stat-label">Daily Claims</span>
+                            <span class="stat-value">5K+</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Team Size</span>
+                            <span class="stat-value">20+</span>
+                        </div>
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-badge">Java</span>
+                        <span class="tech-badge">Spring Boot</span>
+                        <span class="tech-badge">Legacy</span>
+                        <span class="tech-badge">PostgreSQL</span>
+                    </div>
+                </div>
+
+                <div class="project">
+                    <h3>Workplace Accident Claims</h3>
+                    <div class="client">AXA Insurance | Les Accidents de Travail</div>
+                    <p>Complex claims processing for workplace injuries. Medical documentation, compliance requirements, regional variations. Building systems where every decision and precision affects real people's claims.</p>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <span class="stat-label">Complexity</span>
+                            <span class="stat-value">High</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Uptime</span>
+                            <span class="stat-value">99.9%</span>
+                        </div>
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-badge">Java</span>
+                        <span class="tech-badge">Spring Boot</span>
+                        <span class="tech-badge">Medical Data</span>
+                        <span class="tech-badge">Compliance</span>
+                    </div>
+                </div>
+
+                <div class="project">
+                    <h3>Financial Platform at Scale</h3>
+                    <p>Production engineering for billions in transactions</p>
+                    <p>Modern financial systems processing 100K+ transactions weekly with 99.99% uptime. Multi-region deployment, AI integration for document processing, built from ground up with production excellence as first principle.</p>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <span class="stat-label">Daily Tx</span>
+                            <span class="stat-value">100K+</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Uptime SLA</span>
+                            <span class="stat-value">99.99%</span>
+                        </div>
+                    </div>
+                    <div class="project-tech">
+                        <span class="tech-badge">Java</span>
+                        <span class="tech-badge">Kubernetes</span>
+                        <span class="tech-badge">AWS</span>
+                        <span class="tech-badge">AI</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="philosophy">
+                <h3>The Full Arc</h3>
+                <p>Got my first computer at 7. Made memes and EDM at 15. Built a parking startup. Mastered enterprise systems. Scaled infrastructure for billions. The journey from "how does this work?" to "how do I build this?" to "how do I make millions of people trust this?" That's the real arc.</p>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section>
+            <h2><span>→</span> Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-group">
+                    <h3>Backend</h3>
+                    <ul>
+                        <li>Java & Spring Boot</li>
+                        <li>Python & FastAPI</li>
+                        <li>Node.js & Express</li>
+                        <li>Microservices</li>
+                    </ul>
+                </div>
+
+                <div class="skill-group">
+                    <h3>Frontend</h3>
+                    <ul>
+                        <li>React & TypeScript</li>
+                        <li>Next.js</li>
+                        <li>Real-time UX</li>
+                        <li>Responsive Design</li>
+                    </ul>
+                </div>
+
+                <div class="skill-group">
+                    <h3>Infrastructure</h3>
+                    <ul>
+                        <li>AWS (EC2, Lambda, RDS)</li>
+                        <li>Kubernetes & Docker</li>
+                        <li>Terraform & IaC</li>
+                        <li>Multi-Region Deploy</li>
+                    </ul>
+                </div>
+
+                <div class="skill-group">
+                    <h3>Data</h3>
+                    <ul>
+                        <li>PostgreSQL & MySQL</li>
+                        <li>MongoDB & NoSQL</li>
+                        <li>Redis & Caching</li>
+                        <li>Query Optimization</li>
+                    </ul>
+                </div>
+
+                <div class="skill-group">
+                    <h3>AI & Modern</h3>
+                    <ul>
+                        <li>LLM Integration</li>
+                        <li>Claude & ChatGPT</li>
+                        <li>Document Processing</li>
+                        <li>Responsible AI</li>
+                    </ul>
+                </div>
+
+                <div class="skill-group">
+                    <h3>Leadership</h3>
+                    <ul>
+                        <li>On-Call Mastery</li>
+                        <li>System Design</li>
+                        <li>Team Leadership</li>
+                        <li>Technical Mentoring</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="contact-section">
+            <h2><span>→</span> Let's Build Something</h2>
+            <p class="contact-text">Whether you're building a mobility startup, modernizing legacy systems, scaling new platforms, or architecting infrastructure for millions—I've been there. From parking apps in Casablanca to insurance claims for AXA to billion-dollar transactions. I understand the full spectrum.</p>
+            <a href="mailto:zaid.bouhal.professional@gmail.com" class="btn">Send an email</a>
+            <div class="social-links">
+                <a href="https://linkedin.com/in/zaid-abouhal" target="_blank" title="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/tappedash" target="_blank" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:zaid.bouhal.professional@gmail.com" title="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Zaid Abouhal. Born 1998. Building systems at scale.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 200;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href').substring(1);
+                if (href === current) {
+                    link.style.color = '#d63230';
+                } else {
+                    link.style.color = '#666';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
